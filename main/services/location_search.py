@@ -7,9 +7,9 @@ class LocationSearchService:
         order_by = order_by or "-popularity"
         if term:
             if limit:
-                location_list = Location.objects.filter(name__istartswith=term).order_by(order_by)[:int(limit)]
+                location_list = Location.objects.filter(display_name__istartswith=term).order_by(order_by)[:int(limit)]
             else:
-                location_list = Location.objects.filter(name__istartswith=term).order_by(order_by)
+                location_list = Location.objects.filter(display_name__istartswith=term).order_by(order_by)
             print(location_list)
             locations = location_list.all()
             response = []

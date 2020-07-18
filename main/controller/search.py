@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-import json
+
 from ..models import Location
 
 from ..utils.api_response import APIResponse
@@ -9,6 +9,7 @@ from ..utils.api_filters import ApiFilters
 from ..services.location_search import LocationSearchService
 from django.utils import timezone
 
+from ..serializers.search_request_serailizer import SearchSerializer
 import os
 
 
@@ -22,18 +23,22 @@ def search(request):
     count = request.GET.get('count')
     filters = ApiFilters(request.GET.get('filters'))
     order_by = filters.get('order_by')
-    try:
-        response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-        if response["data"]:
-            return APIResponse.send(response["data"])
-        else:
-            return APIResponse.send(data="", code=response["code"], error=response["error"])
+    if SearchSerializer.validate(request=request):
 
-    except Exception as e:
+        try:
+            response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-        return APIResponse.send("", code=500, error=e)
+            if response["data"]:
+                return APIResponse.send(response["data"])
+            else:
+                return APIResponse.send(data="", code=response["code"], error=response["error"])
 
+        except Exception as e:
+
+            return APIResponse.send("", code=500, error=e)
+    else:
+        return APIResponse.send("", code=400, error='Invalid Request')
 
 def data_entry(request):
     bulk_mgr = BulkCreateManager(chunk_size=20)
