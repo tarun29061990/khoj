@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from . import controller
 
 urlpatterns = [
-    path('query/', views.search, name='search')
+    path('query/', controller.search, name='search'),
+    path('add/', controller.data_entry, name='data_entry')
 ]

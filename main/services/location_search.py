@@ -1,0 +1,21 @@
+from ..models import Location
+
+
+class LocationSearchService:
+
+    def get_locations(self, term, order_by=None, limit=None):
+        order_by = order_by or "-popularity"
+        if term:
+            if limit:
+                location_list = Location.objects.filter(name__istartswith=term).order_by(order_by)[:int(limit)]
+            else:
+                location_list = Location.objects.filter(name__istartswith=term).order_by(order_by)
+            print(location_list)
+            locations = location_list.all()
+            response = []
+            for location in locations:
+                response.append({'name': location.name, 'display_name': location.display_name,'popularity': location.popularity})
+
+            return {"data": response}
+        else:
+            return {"data": "", "code": 400, "error": "Invalid Request!! Query Parameter term should have some value"}
