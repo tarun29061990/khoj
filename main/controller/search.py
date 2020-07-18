@@ -19,26 +19,33 @@ def index(request):
 
 def search(request):
 
-    term = request.GET.get('term')
-    count = request.GET.get('count')
-    filters = ApiFilters(request.GET.get('filters'))
-    order_by = filters.get('order_by')
+    if request.method == 'GET':
 
-    if SearchSerializer.validate(request=request):
+        if SearchSerializer.validate(request=request):
 
-        try:
-            response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
+            term = request.GET.get('term')
+            count = request.GET.get('count')
+            filters = ApiFilters(request.GET.get('filters'))
+            order_by = filters.get('order_by')
 
-            if response["data"]:
-                return APIResponse.send(response["data"])
-            else:
-                return APIResponse.send(data="", code=response["code"], error=response["error"])
+            try:
+                response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-        except Exception as e:
+                if response["data"]:
+                    return APIResponse.send(response["data"])
+                else:
+                    return APIResponse.send(data="", code=response["code"], error=response["error"])
 
-            return APIResponse.send("", code=500, error=e)
+            except Exception as e:
+
+                return APIResponse.send("", code=500, error=e)
+
+        else:
+            return APIResponse.send("", code=400, error='Invalid Request')
+
     else:
-        return APIResponse.send("", code=400, error='Invalid Request')
+        return  APIResponse.send("", code=404, error='Request not found')
+
 
 def data_entry(request):
     bulk_mgr = BulkCreateManager(chunk_size=20)
