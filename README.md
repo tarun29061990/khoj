@@ -6,11 +6,11 @@ Khoj is a typeahead autocomplete service which gives suggestions sorted in the o
 
 ## How to set up:
 You need to have python3.7.3 virtual environment installed on your machine.
-To install python3.7.3 virtual environment follow this link:
+To install python3.7.3 virtual environment follow this link:  
+
 https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3 
 
 After installing the virtual environment, go to the project folder and type: 
-
 1. source <virtual_env_directory> activate
 2. pip install -r requirements.txt
 3. create Database named khoj with Encoding and Collation as utf8mb4 and utf8mb4_general_ci respectively
@@ -43,9 +43,10 @@ Params:
 ```
 
 #### Error Codes
+```
 500 - Internal server error
 400 - Invalid Request
-404 - Request not found
+```
 
 #### Rate limit
 This Api is rate limited based on IP to 20 request per minute. It uses Django ratelimit for achieving this.
@@ -76,3 +77,6 @@ We can use Memcache for better caching strategy. Its a memory based cache and we
 
 ## Who do I talk to? 
 Tarun Chaudhary (http://curioustechie.in)
+
+
+
