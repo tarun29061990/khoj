@@ -12,7 +12,11 @@ from django.utils import timezone
 from ..serializers.search_request_serailizer import SearchSerializer
 import os
 
+from django.core.cache import cache
+from ratelimit.decorators import ratelimit
 
+
+@ratelimit(key='ip', rate='20/m', method=ratelimit.ALL)
 def search(request):
 
     if request.method == 'GET':
@@ -24,17 +28,23 @@ def search(request):
 
             order_by = request.GET.get('sort')
 
-            try:
-                response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
+            cache_key = term+count+order_by
+            if cache.get(cache_key):
 
-                if response["data"] or len(response["data"]) == 0:
-                    return APIResponse.send(response["data"])
-                else:
-                    return APIResponse.send(data="", code=response["code"], error=response["error"])
+                return APIResponse.send(cache.get(cache_key))
+            else:
+                try:
+                    response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-            except Exception as e:
+                    if response["data"] or len(response["data"]) == 0:
+                        cache.set(cache_key, response["data"])
+                        return APIResponse.send(response["data"])
+                    else:
+                        return APIResponse.send(data="", code=response["code"], error=response["error"])
 
-                return APIResponse.send("", code=500, error=e)
+                except Exception as e:
+
+                    return APIResponse.send("", code=500, error=e)
 
         else:
 
