@@ -38,7 +38,7 @@ Method: GET
 
 Params:
     term - A string which represents the query passed by the user 
-           (Required parameter otherwise, Error code 400 if not provided)
+           (Required parameter, If not provided 400 error code will be thrown)
     count - Count of results the response data should limit to
     sort - Ordering the response based on some paramenter. 
            (Right now only ordering by popularity is supported)

@@ -36,7 +36,7 @@ def search(request):
                 try:
                     response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-                    if response["data"] or len(response["data"]) == 0:
+                    if response["code"] == 200:
                         cache.set(cache_key, response["data"])
                         return APIResponse.send(response["data"])
                     else:
