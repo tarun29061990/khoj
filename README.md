@@ -13,7 +13,7 @@ https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-v
 After installing the virtual environment, go to the project folder and type: 
 1. source <virtual_env_directory> activate
 2. pip install -r requirements.txt
-3. create Database named khoj with Encoding and Collation as utf8mb4 and utf8mb4_general_ci respectively
+3. create a MYSQL DB named khoj with Encoding and Collation as utf8mb4 and utf8mb4_general_ci respectively
 4. Create tables by running migration script
 
         python manage.py makemigrations main
