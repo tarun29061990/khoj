@@ -21,7 +21,7 @@ After installing the virtual environment, go to the project folder and type:
 
 5. Run the server by typing
 
-            python manage.py runserver
+        python manage.py runserver
 6. Hit the below api for setting up the necessary data
 
         Assuming you are running this server on port 8000, so the url would be
@@ -62,13 +62,13 @@ python manage.py test
 
 ## Project Structure
 The project structure is inspired by Django project structure. All of the code resides in the main folder inside the project root.
-main/controller - Contains API logic.
-main/data - Contains Initial location data and data for the test cases.
-main/migrations - Contains DB migrations
-main/models - Contains DB model
-main/serializers - Contains Request serializers
-main/services - Contains business logic for APIs
-main/utils - Contains utility classes such as api_response, api_filters, etc.
+**main/controller** - Contains API logic.
+**main/data** - Contains Initial location data and data for the test cases.
+**main/migrations** - Contains DB migrations
+**main/models** - Contains DB model
+**main/serializers** - Contains Request serializers
+**main/services** - Contains business logic for APIs
+**main/utils** - Contains utility classes such as api_response, api_filters, etc.
 
 ## Optimisations
 As of now this application works fast (API response time is under 50ms) , but the case won't be the same when data gets huge (say 1 million rows in DB). To optimise this and still achieve faster query then we can consider putting our data in the Elastic search.
