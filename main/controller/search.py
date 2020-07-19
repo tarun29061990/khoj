@@ -16,6 +16,9 @@ from django.core.cache import cache
 from ratelimit.decorators import ratelimit
 
 
+def index(request):
+    return HttpResponse('Welcome to KHOJ')
+
 @ratelimit(key='ip', rate='20/m', method=ratelimit.ALL)
 def search(request):
 
