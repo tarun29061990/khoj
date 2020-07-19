@@ -4,6 +4,7 @@ from ..models import Location
 class LocationSearchService:
 
     def get_locations(self, term, order_by=None, limit=None):
+        
         order_by = order_by or "-popularity"
         if term:
             if limit:
@@ -14,7 +15,7 @@ class LocationSearchService:
             locations = location_list.all()
             response = []
             for location in locations:
-                response.append({'name': location.name, 'display_name': location.display_name,'popularity': location.popularity})
+                response.append({'id':location.id, 'name': location.name, 'display_name': location.display_name,'popularity': location.popularity})
 
             return {"data": response}
         else:

@@ -13,10 +13,6 @@ from ..serializers.search_request_serailizer import SearchSerializer
 import os
 
 
-def index(request):
-    return HttpResponse('You are at KHOJ')
-
-
 def search(request):
 
     if request.method == 'GET':
@@ -25,13 +21,13 @@ def search(request):
 
             term = request.GET.get('term')
             count = request.GET.get('count')
-            filters = ApiFilters(request.GET.get('filters'))
-            order_by = filters.get('order_by')
+
+            order_by = request.GET.get('sort')
 
             try:
                 response = LocationSearchService().get_locations(term=term, order_by=order_by, limit=count)
 
-                if response["data"]:
+                if response["data"] or len(response["data"]) == 0:
                     return APIResponse.send(response["data"])
                 else:
                     return APIResponse.send(data="", code=response["code"], error=response["error"])
@@ -41,10 +37,12 @@ def search(request):
                 return APIResponse.send("", code=500, error=e)
 
         else:
+
             return APIResponse.send("", code=400, error='Invalid Request')
 
     else:
-        return  APIResponse.send("", code=404, error='Request not found')
+
+        return APIResponse.send("", code=404, error='Request not found')
 
 
 def data_entry(request):
